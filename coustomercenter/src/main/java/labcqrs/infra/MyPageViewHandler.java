@@ -44,7 +44,17 @@ public class MyPageViewHandler {
         try {
             if (!deliveryStarted.validate()) return;
             // view 객체 조회
+            Optional<MyPage> myPageOptional = myPageRepository.findById(
+                deliveryStarted.getOrderId()
+            );
 
+            if (myPageOptional.isPresent()) {
+                MyPage myPage = myPageOptional.get();
+                // view 객체에 이벤트의 eventDirectValue 를 set 함
+                myPage.setDeliveryStatus("배송됨");
+                // view 레파지 토리에 save
+                myPageRepository.save(myPage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,7 +67,17 @@ public class MyPageViewHandler {
         try {
             if (!orderCancelled.validate()) return;
             // view 객체 조회
+            Optional<MyPage> myPageOptional = myPageRepository.findById(
+                orderCancelled.getId()
+            );
 
+            if (myPageOptional.isPresent()) {
+                MyPage myPage = myPageOptional.get();
+                // view 객체에 이벤트의 eventDirectValue 를 set 함
+                myPage.setOrderStatus("주문취소됨");
+                // view 레파지 토리에 save
+                myPageRepository.save(myPage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
